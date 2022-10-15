@@ -1,0 +1,10 @@
+{{>upperhtml}}
+{{>navbar}}
+<div class="container justify-content-center w-50">
+    <form method="post" class="d-inline-block">
+        <label>Are you Sure You want to Delete?</label>
+        <input type="submit" formaction="/delete/{{id}}/yes" value="YES">
+        <input type="submit" formaction="/delete/{{id}}/no" value="NO">
+    </form>
+</div>
+{{>lowerhtml}}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Create News</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    
+</head>
+<body>
+    <div class="row container justify-content-center">
+        <div class="col-md-6 border-end w-auto">
+        {{>form}}
+        </div>
+
+        <div class="col-md-6 m-5">
+            <form method="POST" action="createnews/api">
+                <label class="form-label">Source Input</label>
+                <input class="form-control" type="text" name="srcinput">
+                <hr>
+                <label class="form-label">Article Input</label>
+                <input class="form-control" type="text" name="artinput">
+                <input type="submit" class="form-control btn btn-success mt-5" value="Insert">
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/jq/jquery.js"></script>
+</body>
+</html>

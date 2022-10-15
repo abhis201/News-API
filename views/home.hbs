@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+
+    <title>News App</title>
+  </head>
+  <body>
+    {{>navbar}}
+    <div class="row">
+      <div class="bg-success col-md-9">
+        <div class="row container justify-content-center">
+        {{#each articles}}
+        <div class="card m-2 col-md-3" style="width: 300px;">
+          <img class="card-img-top pt-2" src="{{this.urlToImage}}">
+          <div class="card-body">
+            <h5 name="card-title" class="title-crd">{{this.title}}</h5>
+            <p name="card-text" class="text-crd">{{this.description}}</p>
+            <a class="btn btn-warning" href="update/{{this._id}}">Update</a>
+            <a class="btn btn-danger" href="delete/{{this._id}}">Delete</a>
+          </div>
+        </div>
+      {{/each}}
+      </div>
+      </div>
+
+      <div class="bg-warning bg-gradient col-md-3 border-start">
+        <div class="border shadow bg-light p-2 mt-2 me-2">
+          <div class="form-label p-2 pb-0"><p style="text-align: center; color:blue">Sign-Up</p></div>
+          <form type="form" action="" method="post">
+          <div class="form-element p-2 pt-0"><input name="userID" class="form-control" type="text" placeholder="Enter User_id"></div>
+          <div class="form-element p-2"><input name="emailID" class="form-control" type="text" placeholder="Enter Email Id"></div>
+          <div class="form-element p-2"><input name="pass" class="form-control" type="text" placeholder="Enter Password"></div>
+          <div class="form-element p-2"><input type="submit" class="btn btn-success" value="Submit"></div>
+          </form>
+        </div>
+        <hr>
+        <form method="post" action="/article" class="mb-2 w-auto p-2 ">
+          <input type="submit" class="btn btn-primary w-100" value="Delete Duplicate Articles">
+        </form>
+        <hr>
+        <form method="post" action="/source" class="mb-2 w-auto p-2 ">
+          <input type="submit" class="btn btn-primary w-100" value="Delete Duplicate Sources">
+        </form>
+        <hr>
+        <form method="post" action="/user" class="mb-2 w-auto p-2 ">
+          <input type="submit" class="btn btn-primary w-100" value="Delete Duplicate Users">
+        </form>
+        <hr>
+        <a>Source Records: {{count.srcnum}}</a>
+        <hr>
+        <a>Total Articles: {{count.artnum}}</a>
+        <hr>
+        <a>Total Users: {{count.usnum}}</a>
+        <hr>
+        <ul>
+          {{#each users}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    
+
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/jq/jquery.js"></script>
+  </body>
+</html>

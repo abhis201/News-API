@@ -1,0 +1,19 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+
+*{
+    font-family: 'Poiret One', cursive;
+    font-weight: bolder;
+} */
+
+.title-crd{
+    font-size: 15px;
+    color: darkgreen;
+}
+.text-crd{
+    display: block;/* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 9em;
+  line-height: 1.5em;
+}
