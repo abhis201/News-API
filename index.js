@@ -12,7 +12,7 @@ const methodOverride = require('method-override')
 
 app.use(cookieParser())
 
-app.use(methodOverride('_method', { methods: ['POST', 'GET'] });
+app.use(methodOverride('_method');
 
 const port = process.env.PORT || 3000;
 
