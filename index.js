@@ -8,8 +8,11 @@ const news = require(path.join(__dirname,"/models/collections"));
 const bcrypt = require("bcrypt")
 const cookieParser = require("cookie-parser")
 const auth = require(path.join(__dirname,'/middleware/auth'))
+const methodOverride = require('method-override')
 
 app.use(cookieParser())
+
+app.use(methodOverride('_method', { methods: ['POST', 'GET'] });
 
 const port = process.env.PORT || 3000;
 
