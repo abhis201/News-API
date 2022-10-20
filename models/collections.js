@@ -1,5 +1,9 @@
+require("dotenv").config()
 const mongoose = require("mongoose")
 const validator = require("validator")
+const bcrypt = require("bcrypt")
+const path = require("path")
+const jwt = require("jsonwebtoken")
 
 var schema = mongoose.Schema;
 
@@ -25,12 +29,31 @@ article.index({'description':1},{unique:true,sparse:true})
 const user = schema({
 
     userid: {type: String, required: true, unique:true, sparse:true},
-    email: {type:String ,required:true,validate(value){
-        if(!validator.isEmail(value)){
-            throw new Error("Invalid email id")
+    email: {type:String ,required:true,validate: [ validator.isEmail, 'invalid email' ]},
+    password: {type: String, required: true},
+    tokens:[{
+        token:{
+            type:String,
+            required: true
         }
-    }},
-    password: {type: String, required: true}
+    }]
+})
+
+user.methods.generateAuthToken = async function(){
+    try {
+        const authtoken = await jwt.sign({_id:this._id.toString()},process.env.SECRET_KEY)
+        this.tokens = this.tokens.concat({token:authtoken})
+        return authtoken;
+    }catch (error){
+        console.log(error);
+    }
+}
+
+user.pre("save",async function(next){
+    if(this.isModified("password")){
+        this.password = await bcrypt.hash(this.password,10);
+    }
+    next()
 })
 
 

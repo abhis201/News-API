@@ -3,10 +3,13 @@ const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const hbs = require('hbs');
-const { runInNewContext } = require('vm');
-const { user } = require('./models/collections');
 require(path.join(__dirname,"db/conn"));
 const news = require(path.join(__dirname,"/models/collections"));
+const bcrypt = require("bcrypt")
+const cookieParser = require("cookie-parser")
+const auth = require(path.join(__dirname,'/middleware/auth'))
+
+app.use(cookieParser())
 
 const port = process.env.PORT || 3000;
 
@@ -28,6 +31,7 @@ app.set('view engine','hbs');
 hbs.registerPartials(partials);
 
 app.use(express.urlencoded({extended:false}))
+
 // app.use(express.json())
 
 // app.use(methodOverride("_method"))
@@ -54,6 +58,8 @@ app.get("",async(req,res)=>{
 
     let card = null;
 
+    console.log(`Cookie value: ${req.cookies.jwt}`);
+
     if(req.query.search){
         const regex = new RegExp(".*"+req.query.search+".*",'i')
 
@@ -71,9 +77,31 @@ app.get("",async(req,res)=>{
     res.render("home",pass);
 })
 
-app.get("/createnews",(req,res)=>{
+app.get("/createnews",auth,(req,res)=>{
 
     res.render("createnews",{'insert':true})
+})
+
+app.post("/signup",async(req,res)=>{
+    try{
+        const userid = req.body.userid;
+        const email = req.body.email;
+        const pass = req.body.pass;
+        const userdata = await news.user.findOne({userid:userid,email:email})
+
+        const matchpass = await bcrypt.compare(pass,userdata.password)
+        if(matchpass){
+            res.cookie('jwt',userdata.tokens)
+            res.render("home")
+        }
+        else{
+            res.status(401).send("Wrong Password");
+        }
+    }
+    catch(error){
+        console.log(error)
+        res.status(401).send("Invalid Login Detail")
+    }
 })
 
 app.post("",async(req,res) =>{
@@ -87,9 +115,16 @@ app.post("",async(req,res) =>{
         if(result) res.send("User Data already present")
         else{
             let adduser = new news.user({userid:uid,email:eid,password:pass})
-            await adduser.save((err,result)=>{if(err) res.status(201).send(err)
-            else console.log(result)})
-            res.status(201).render("home")
+
+            const token = await adduser.generateAuthToken();
+            console.log(token)
+            const data = await adduser.save()
+            res.cookie("jwt",token,{
+                expires: new Date(Date.now() + 30000),
+                httpOnly: true
+            })
+            console.log("User Added: "+data);
+            res.status(201).render("dataentered")
         }
     })
     
@@ -214,6 +249,10 @@ app.post("/createnews/:id",async(req,res)=>{
         res.send(err.message)
     }
 }
+})
+
+app.get("/signup",(req,res)=>{
+    res.render("signup");
 })
 
 app.get("/update/:id",async(req,res)=>{
