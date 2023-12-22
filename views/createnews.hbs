@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -7,27 +8,50 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    
-</head>
-<body>
-    <div class="row container justify-content-center">
-        <div class="col-md-6 border-end w-auto">
-        {{>form}}
-        </div>
 
-        <div class="col-md-6 m-5">
-            <form method="POST" action="createnews/api">
-                <label class="form-label">Source Input</label>
-                <input class="form-control" type="text" name="srcinput">
+</head>
+
+<body>
+    {{>navbar}}
+    <br>
+    <div class="container">
+        <div class="row m-3">
+            <div class="col-md-6 border-end">
+                <h5 class="text-center">News Form Input here</h5>
                 <hr>
-                <label class="form-label">Article Input</label>
-                <input class="form-control" type="text" name="artinput">
-                <input type="submit" class="form-control btn btn-success mt-5" value="Insert">
-            </form>
+                <br>
+                {{>form}}
+            </div>
+
+            <div class="col-md-6">
+                <h5 class="text-center">News JSON Input here</h5>
+                <hr>
+                <br>
+                <form method="POST" action="/api">
+                    <label class="form-label">Insert Article Json here</label>
+                    <textarea class="form-control" name="artinput" rows="4" 
+                    placeholder='{
+                        "source": {
+                        "id": null,
+                        "name": "People.cn"
+                        },
+                        "author": "F_126",
+                        "title": "Uncovering the hidden truths behind US economic data",
+                        "description": "The U.S. economy showed impressive performance in the first three quarters of 2023, despite continuous interest rate hikes by the Federal Reserve.",
+                        "url": "http://en.people.cn/n3/2023/1220/c90000-20112760.html",
+                        "urlToImage": null,
+                        "publishedAt": "2023-12-20T06:03:33Z",
+                        "content": "The U.S. economy showed impressive performance in the first three quarters of 2023, despite continuous interest rate hikes by the Federal Reserve. This performance included record-breaking stock mark…"
+}'></textarea>
+
+                    <input type="submit" class="form-control btn btn-success mt-3" value="Insert">
+                </form>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript" src="/js/bootstrap.js"></script>
     <script type="text/javascript" src="/jq/jquery.js"></script>
 </body>
+
 </html>

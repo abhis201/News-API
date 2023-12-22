@@ -8,8 +8,7 @@ app.use(cP())
 
 const auth = async(req,res,next)=>{
     try {
-        
-        const token = req.cookies.jwt;
+        const token = req.cookies.jwt.toString();
         const val = await jwt.verify(token,process.env.SECRET_KEY);
         console.log(val);
         if(val){

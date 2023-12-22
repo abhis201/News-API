@@ -5,6 +5,10 @@
     font-weight: bolder;
 } */
 
+.body{
+    height: 100%;
+}
+
 .title-crd{
     font-size: 15px;
     color: darkgreen;
