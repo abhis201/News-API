@@ -342,52 +342,50 @@ app.post("/deleteAll", async (req, res) => {
 
 app.post("/:id", async (req, res) => {
     if (req.params.id == 'article') {
-        const arcs = await news.article.find().distinct('title')
-        console.log(arcs.count + " distinct articles")
+        try {
+            // Find duplicate articles based on the "title" field
+            const Article = news.article;
+            const duplicateArticles = await Article.aggregate([
+                { $group: { _id: '$title', count: { $sum: 1 }, ids: { $push: '$_id' } } },
+                { $match: { count: { $gt: 1 } } }
+            ]);
 
-        for (let arc of arcs) {
-            try {
-                const rec = await news.article.findOne({ title: arc })
-                const del = await news.article.deleteMany({ title: arc })
-                const addone = new news.article({ 'title': rec.title, 'description': rec.description, 'url': rec.url, 'urlToImage': rec.urlToImage, 'publishedAt': rec.publishedAt, 'content': rec.content })
-                await addone.save()
-            }
-            catch (e) {
-                console.log(e.message)
-            }
-        }
-        res.redirect("/")
-    }
-    else if (req.params.id == 'source') {
-        const srcs = await news.source.find().distinct('id')
-        console.log(srcs)
+            // Iterate over the duplicate articles and keep one, remove the others
+            for (const duplicate of duplicateArticles) {
+                const [mainArticleId, ...duplicateIds] = duplicate.ids;
 
-        for (let src of srcs) {
-            try {
-                const rec = await news.source.findOne({ id: src })
-                const del = await news.source.deleteMany({ id: src })
-                const addone = new news.source({ 'id': rec.id, 'name': rec.name })
-                await addone.save()
+                // Remove duplicate articles
+                await Article.deleteMany({ _id: { $in: duplicateIds } });
+
+                console.log(`Removed ${duplicateIds.length} duplicates for article with ID ${mainArticleId}`);
             }
-            catch (e) {
-                console.log(e.message)
-            }
+            console.log('Duplicate removal process completed.');
+        } catch (error) {
+            console.error('Error removing duplicates:', error);
         }
         res.redirect("/")
     }
     else if (req.params.id == 'user') {
-        const users = await news.user.find().distinct('userid')
+        try {
+            const User = news.user
+            // Find duplicate users based on the "userid" field
+            const duplicateUsers = await User.aggregate([
+                { $group: { _id: '$userid', count: { $sum: 1 }, ids: { $push: '$_id' } } },
+                { $match: { count: { $gt: 1 } } }
+            ]);
 
-        for (let user of users) {
-            try {
-                const rec = await news.user.findOne({ userid: user })
-                const del = await news.user.deleteMany({ userid: user })
-                const addone = new news.user({ 'userid': rec.userid, 'email': rec.email, 'password': rec.password })
-                await addone.save()
+            // Iterate over the duplicate users and keep one, remove the others
+            for (const duplicate of duplicateUsers) {
+                const [mainUserId, ...duplicateIds] = duplicate.ids;
+
+                // Remove duplicate users
+                await User.deleteMany({ _id: { $in: duplicateIds } });
+
+                console.log(`Removed ${duplicateIds.length} duplicates for user with ID ${mainUserId}`);
             }
-            catch (e) {
-                console.log(e.message)
-            }
+            console.log('Duplicate removal process for users completed.');
+        } catch (error) {
+            console.error('Error removing user duplicates:', error);
         }
         res.redirect("/")
     }
