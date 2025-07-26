@@ -1,11 +1,11 @@
 <form method="POST" class="w-auto">
-  <div class="mb-3 mt-3 d-inline-block w-20">
-    <label for="sid" class="form-label">Source Id:</label>
-    <input type="text" class="form-control" id="sid" placeholder="Source Id" name="sid" value="{{data.source.id}}"> 
-    </div>
-    <div class="mb-3 w-20 d-inline-block">
-    <label for="sname" class="form-label w-20">Source Name:</label>
-    <input type="text" class="form-control w-20" id="sname" placeholder="Source Name" name="sname" value="{{data.source.name}}">
+  <div class="mb-3 mt-3">
+    <label for="username" class="form-label">Username:</label>
+    <input type="text" class="form-control" id="username" placeholder="Enter your username" name="username">
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email:</label>
+    <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email">
   </div>
    <div class="mb-3">
     <label for="title" class="form-label">Title:</label>
@@ -28,8 +28,8 @@
     <input type="text" class="form-control" id="pubat" placeholder="Published At" name="pubat" value="{{data.publishedAt}}">
   </div>
    <div class="mb-3">
-    <label for="content" class="form-label">Content:</label>
-    <input type="text" class="form-control" id="content" placeholder="Enter Content" name="content" value="{{data.content}}">
+    <label for="review" class="form-label">Your Review:</label>
+    <textarea class="form-control" id="review" name="review" rows="5" placeholder="Write your review here..."></textarea>
   </div>
   {{#if insert}}
   <button type="submit"  formaction="/createnews/insert" class="btn btn-success">Insert</button>

@@ -58,83 +58,45 @@
 
 <body style="overflow-y: hidden; overflow-x: hidden">
   {{>navbar}}
-  <div class="row">
-    <div class="bg-success col-md-9 py-5" style="height: 94vh; overflow-y: scroll;">
-      <div class="row container justify-content-center">
-        {{#if articles}}
-        {{#each articles}}
-        <div class="card m-2 col-md-3" style="width: 300px; height: 490px;">
-          <img class="card-img-top pt-2" src="{{this.urlToImage}}" alt="Image" width="100%" height="200px">
-          <div class="card-body">
-            <h5 name="card-title" class="title-crd" style="height: 55px; overflow: hidden;">{{this.title}}</h5>
-            <p name="card-text" class="text-crd" style="height: 70px; overflow: hidden;">{{this.description}}</p>
-            <div class="d-flex">
-              <a class="btn btn-warning" href="update/{{this._id}}" style="width: 49%;">Update</a>
-              <a class="btn btn-danger ms-2" href="delete/{{this._id}}" style="width: 49%;">Delete</a>
-            </div>
-            <hr>
-            <a target="_blank" href="{{this.url}}" class="btn btn-primary" style="width: 100%;">Read More</a>
+  <div class="container-fluid mt-4">
+    <div class="row justify-content-center" style="height: 94vh; overflow-y: auto;">
+      {{#if articles}}
+      {{#each articles}}
+      <div class="card m-2 col-md-3" style="width: 300px; height: 490px;">
+        <img class="card-img-top pt-2" src="{{this.urlToImage}}" alt="Image" width="100%" height="200px">
+        <div class="card-body">
+          <h5 name="card-title" class="title-crd" style="height: 55px; overflow: hidden;">{{this.title}}</h5>
+          <p name="card-text" class="text-crd" style="height: 70px; overflow: hidden;">{{this.description}}</p>
+          <div class="d-flex">
+            <a class="btn btn-warning" href="update/{{this._id}}" style="width: 49%;">Update</a>
+            <a class="btn btn-danger ms-2" href="delete/{{this._id}}" style="width: 49%;">Delete</a>
           </div>
+          <hr>
+          <a target="_blank" href="{{this.url}}" class="btn btn-primary" style="width: 100%;">Read More</a>
         </div>
-
-        {{/each}}
-        {{else}}
-        <div class="text-center center-vertically">
-          <h3>No Articles in the Database</h3>
-          <h4>Please click on the button below to fetch latest news articles from the API</h4>
-          <h4>Please login before fetching the articles</h4>
-          <form class="row" name="fetchArticles" action="/fetch" onsubmit="return validateAndSubmit()" method="post">
-            <div class="col-md-2 offset-md-4">
-              <select name="country" class="form-select mt-3" aria-label="Select country">
-                <option selected value="">Select Country</option>
-                <option value="in">India</option>
-                <option value="us">USA</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <button class="btn btn-primary mt-3" style="width: 100%;" type="submit">Fetch</button>
-            </div>
-          </form>
-        </div>
-        {{/if}}
       </div>
-    </div>
-
-    <div class="bg-warning col-md-3 border-start pe-3">
-      <div class="border shadow bg-light p-2 mt-2 me-2">
-        <div class="form-label p-2 pb-0">
-          <p style="text-align: center; color:blue">User Review</p>
-        </div>
-        <form type="form" action="/review" method="post">
-          <div class="form-element p-2 pt-0"><input name="userID" class="form-control" type="text"
-              placeholder="{{user}}" disabled></div>
-          <div class="form-element p-2"><input name="emailID" class="form-control" type="text"
-              placeholder="{{user_email}}" disabled></div>
-          <div class="form-element p-2"><textarea name="review" class="form-control"
-              placeholder="Enter Review for the App" rows="4"></textarea></div>
-          <div class="form-element p-2"><input type="submit" class="btn btn-success" value="Submit"></div>
+      {{/each}}
+      <div style="width:100%; height:40px; padding-bottom:32px;"></div>
+      {{else}}
+      <div class="text-center center-vertically">
+        <h3>No Articles in the Database</h3>
+        <h4>Please click on the button below to fetch latest news articles from the API</h4>
+        <h4>Please login before fetching the articles</h4>
+        <form class="row" name="fetchArticles" action="/fetch" onsubmit="return validateAndSubmit()" method="post">
+          <div class="col-md-2 offset-md-4">
+            <select name="country" class="form-select mt-3" aria-label="Select country">
+              <option selected value="">Select Country</option>
+              <option value="in">India</option>
+              <option value="us">USA</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-primary mt-3" style="width: 100%;" type="submit">Fetch</button>
+          </div>
         </form>
       </div>
-      <hr>
-      <form method="post" action="/article" class="mb-2 w-auto p-2 ">
-        <input type="submit" class="btn btn-primary w-100" value="Delete Duplicate Articles">
-      </form>
-      <hr>
-      <form method="post" action="/deleteAll" class="mb-2 w-auto p-2 " onsubmit="return check()">
-        <input type="submit" class="btn btn-primary w-100" value="Bulk Delete All Articles">
-      </form>
-      <hr>
-      <form method="post" action="/user" class="mb-2 w-auto p-2 ">
-        <input type="submit" class="btn btn-primary w-100" value="Delete Duplicate Users(same email)">
-      </form>
-      <hr>
-      <a>Total Sources: {{count.srcnum}}</a>
-      <hr>
-      <a>Total Articles: {{count.artnum}}</a>
-      <hr>
-      <a>Total Users: {{count.usnum}}</a>
+      {{/if}}
     </div>
-  </div>
 
 
   <script type="text/javascript" src="/js/bootstrap.js"></script>
